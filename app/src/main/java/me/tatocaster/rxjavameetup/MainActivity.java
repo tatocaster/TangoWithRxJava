@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mObserver);
 
+
+
         Subscription subscriptionUsingJust = usingJust().subscribe(new Observer<Object>() {
             @Override
             public void onCompleted() {
@@ -64,7 +66,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mCompositeSubscription.add(subscriptionUsingJust);
+
+
         usingJust();
+
+
         usingCallable();
 
     }
