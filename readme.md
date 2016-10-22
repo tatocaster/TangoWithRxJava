@@ -6,3 +6,5 @@ Given some subscription as a private field to unsubscribe in ```onDestroy()``` l
 Also ```CompositeSubscription```.
 
 Showcase of creating ```Observable``` using ```create```, ```just``` and ```fromCallable``` operators. 
+
+Contains a simple test method, showing a ```Observable``` test
