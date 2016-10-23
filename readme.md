@@ -8,3 +8,6 @@ Also ```CompositeSubscription```.
 Showcase of creating ```Observable``` using ```create```, ```just``` and ```fromCallable``` operators. 
 
 Contains a simple test method, showing a ```Observable``` test
+
+Project also includes RxBus - RxJava based simple event bus. implementation can be found in ```MainActivity.java```
+
