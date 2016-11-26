@@ -23,17 +23,31 @@ public class MainActivity extends AppCompatActivity {
     private Observer mObserver;
     private CompositeSubscription mCompositeSubscription;
 
+    private RxBus _rxBus = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RxBus.subscribe(new Action1() {
+        _rxBus = RxBus.getInstance();
+
+        _rxBus.asObservable().subscribe(new Action1() {
             @Override
             public void call(Object o) {
                 if (o instanceof SimpleEvent)
                     Log.d(TAG, "call: " + ((SimpleEvent) o).greetingText);
             }
         });
+
+        Observable.just("RxJava Meets Java 8")
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        System.out.println(s);
+                    }
+                });
+
+        Observable.just("RxJava Meets Java 8").subscribe(s -> Log.d(TAG, s));
 
         mCompositeSubscription = new CompositeSubscription();
 
@@ -63,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompleted() {
                 Log.d(TAG, "onCompleted() called");
-                RxBus.broadCast(new SimpleEvent("Observable consumed successfully"));
+                _rxBus.send(new SimpleEvent("Observable consumed successfully"));
             }
 
             @Override
@@ -84,6 +98,23 @@ public class MainActivity extends AppCompatActivity {
 
         usingCallable();
 
+
+        Observable.fromCallable((Func0<Object>) () -> "FromCallable").subscribe(new Observer<Object>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                Log.d(TAG, "onNext() called with: o = [" + o + "]");
+            }
+        });
     }
 
     private Observable<Object> usingCreate() {

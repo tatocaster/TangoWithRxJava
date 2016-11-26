@@ -37,6 +37,7 @@ ext.libraries = [
         supportV7: 'com.android.support:appcompat-v7:' + supportLibsVersion,
         rxJava   : 'io.reactivex:rxandroid:1.2.1',
         rxAndroid: 'io.reactivex:rxjava:1.1.6',
+        rxRelay  : 'com.jakewharton.rxrelay:rxrelay:1.2.0',
 
 
         jUnit    : 'junit:junit:4.12',

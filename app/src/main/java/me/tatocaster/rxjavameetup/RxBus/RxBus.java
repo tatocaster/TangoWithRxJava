@@ -1,40 +1,38 @@
 package me.tatocaster.rxjavameetup.rxbus;
 
-import me.tatocaster.rxjavameetup.rxbus.events.BaseEvent;
+import com.jakewharton.rxrelay.PublishRelay;
+import com.jakewharton.rxrelay.Relay;
+
 import rx.Observable;
-import rx.functions.Action1;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
 
 /**
  * Created by tatocaster on 10/23/16.
  */
 
 public class RxBus {
-    private static RxBus instance = null;
-    private final Subject<Object, Object> _bus = new SerializedSubject<>(PublishSubject.create());
+    private final Relay<Object, Object> _bus = PublishRelay.create().toSerialized();
+    private static RxBus rxBus = null;
 
-    private static RxBus getInstance() {
-        if (instance == null) {
-            instance = new RxBus();
+    public static RxBus getInstance() {
+        if (rxBus == null) {
+            rxBus = new RxBus();
         }
-        return instance;
+        return rxBus;
     }
 
-    public static void broadCast(BaseEvent baseEvent) {
-        getInstance().send(baseEvent);
+    private RxBus() {
+
     }
 
-    public static void subscribe(final Action1 onNext) {
-        getInstance().toObserverable().subscribe(onNext);
+    public void send(Object o) {
+        _bus.call(o);
     }
 
-    private void send(BaseEvent baseEvent) {
-        _bus.onNext(baseEvent);
+    public Observable<Object> asObservable() {
+        return _bus.asObservable();
     }
 
-    private Observable<Object> toObserverable() {
-        return _bus;
+    public boolean hasObservers() {
+        return _bus.hasObservers();
     }
 }
